@@ -1,2 +1,3 @@
-# ingenieria-web-2
-Repositorio de talleres de la materia Ingeniería Web II
+# Ingeniería Web II
+
+Actividad 1: Introducción al Desarrollo Web
