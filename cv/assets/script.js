@@ -1,28 +1,46 @@
 // Material Design Resume Interactive Features
 
 // Drawer Toggle
+let lastFocusedElement;
+
 function toggleDrawer() {
     const drawer = document.getElementById('drawer');
     const drawerContent = document.getElementById('drawerContent');
-    
-    if (drawer.classList.contains('hidden')) {
+    const toggleButton = document.querySelector('[aria-controls="drawer"]');
+
+    const isOpen = !drawer.classList.contains('hidden');
+
+    if (!isOpen) {
+        lastFocusedElement = document.activeElement;
         drawer.classList.remove('hidden');
         drawer.offsetHeight;
         drawer.classList.remove('opacity-0');
         drawerContent.classList.remove('-translate-x-full');
+
+        drawer.setAttribute('aria-hidden', 'false');
+        toggleButton.setAttribute('aria-expanded', 'true');
+
         document.body.style.overflow = 'hidden';
+        drawerContent.focus();
     } else {
         drawer.classList.add('opacity-0');
         drawerContent.classList.add('-translate-x-full');
+
+        drawer.setAttribute('aria-hidden', 'true');
+        toggleButton.setAttribute('aria-expanded', 'false');
+
         setTimeout(() => {
             drawer.classList.add('hidden');
             document.body.style.overflow = '';
+            if (lastFocusedElement) {
+                lastFocusedElement.focus();
+            }
         }, 300);
     }
 }
 
 // Close drawer when clicking outside
-document.getElementById('drawer')?.addEventListener('click', function(e) {
+document.getElementById('drawer')?.addEventListener('click', function (e) {
     if (e.target === this) {
         toggleDrawer();
     }
@@ -57,11 +75,11 @@ document.querySelectorAll('.scroll-reveal').forEach((el) => {
 function showToast(message, duration = 3000) {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
-    
+
     toastMessage.textContent = message;
     toast.classList.remove('opacity-0', 'pointer-events-none');
     toast.classList.add('opacity-100');
-    
+
     setTimeout(() => {
         toast.classList.remove('opacity-100');
         toast.classList.add('opacity-0', 'pointer-events-none');
@@ -73,24 +91,56 @@ function scrollToSection(id) {
     const element = document.getElementById(id);
     if (element) {
         const offsetTop = element.offsetTop - 80;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         window.scrollTo({
             top: offsetTop,
-            behavior: 'smooth'
+            behavior: prefersReducedMotion ? 'auto' : 'smooth'
         });
     }
 }
 
 // Scroll to Top
 function scrollToTop() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: prefersReducedMotion ? 'auto' : 'smooth'
     });
+}
+
+// Focus Trap for Drawer
+function trapFocus(element) {
+    const focusable = element.querySelectorAll(
+        'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    element.addEventListener('keydown', function (e) {
+        if (e.key === 'Tab') {
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+    });
+}
+
+// Initialize focus trap for drawer
+const drawerContent = document.getElementById('drawerContent');
+if (drawerContent) {
+    trapFocus(drawerContent);
 }
 
 // Ripple Effect
 document.querySelectorAll('.ripple').forEach(button => {
-    button.addEventListener('click', function(e) {
+    button.addEventListener('click', function (e) {
         const rect = this.getBoundingClientRect();
         const circle = document.createElement('span');
         const size = Math.max(rect.width, rect.height);
@@ -105,6 +155,7 @@ document.querySelectorAll('.ripple').forEach(button => {
         circle.style.pointerEvents = 'none';
         circle.style.transform = 'scale(0)';
         circle.style.transition = 'transform 0.5s ease';
+        circle.setAttribute('aria-hidden', 'true');
 
         this.appendChild(circle);
 
@@ -121,28 +172,34 @@ document.querySelectorAll('.ripple').forEach(button => {
 const navLinks = document.querySelectorAll('header nav a[href^="#"]');
 const sections = document.querySelectorAll('#profile, #experience, #education, #contact');
 
-const navObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            navLinks.forEach(link => link.classList.remove('active-link'));
+if ('IntersectionObserver' in window) {
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active-link')
+                    link.removeAttribute('aria-current');
+                });
 
-            const id = entry.target.getAttribute('id');
-            const activeLink = document.querySelector(`header nav a[href="#${id}"]`);
+                const id = entry.target.getAttribute('id');
+                const activeLink = document.querySelector(`header nav a[href="#${id}"]`);
 
-            if (activeLink) {
-                activeLink.classList.add('active-link');
+                if (activeLink) {
+                    activeLink.classList.add('active-link');
+                    activeLink.setAttribute('aria-current', 'page');
+                }
             }
-        }
+        });
+    }, {
+        root: null,
+        rootMargin: "-40% 0px -50% 0px",
+        threshold: 0
     });
-}, {
-    root: null,
-    rootMargin: "-40% 0px -50% 0px",
-    threshold: 0
-});
 
-sections.forEach(section => {
-    navObserver.observe(section);
-});
+    sections.forEach(section => {
+        navObserver.observe(section);
+    });
+}
 
 
 // Keyboard Navigation
