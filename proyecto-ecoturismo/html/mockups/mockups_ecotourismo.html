@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockups UI — Eco Turismo Experiencial</title>
+  <style>
+    @import url('styles.css');
+  </style>
+</head>
+
+<body>
+
+  <h1>Mockups UI — Eco Turismo Experiencial</h1>
+  <p class="subtitle">Wireframes navegables de las 4 pantallas principales del sistema</p>
+
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="show('search',this)">Buscar destinos</button>
+    <button class="nav-pill" onclick="show('detail',this)">Detalle alojamiento</button>
+    <button class="nav-pill" onclick="show('booking',this)">Flujo de reserva</button>
+    <button class="nav-pill" onclick="show('host',this)">Panel anfitrión</button>
+  </div>
+
+  <!-- PANTALLA 1: BÚSQUEDA -->
+  <div class="screen active" id="screen-search">
+    <div class="wrapper">
+      <div class="topbar">
+        <span class="logo">EcoTurismo</span>
+        <div class="topbar-links">
+          <span>Explorar</span><span>Anfitriones</span><span>Negocios</span>
+          <span style="color:#1D9E75;font-weight:500">Iniciar sesión</span>
+        </div>
+      </div>
+      <div class="hero">
+        <div style="font-size:16px;font-weight:500;color:#085041;margin-bottom:4px">Descubre ecoturismo auténtico</div>
+        <div style="font-size:12px;color:#0F6E56;margin-bottom:12px">Fincas, cabañas, actividades y pueblos rurales de
+          Colombia</div>
+        <div class="search-box">
+          <div class="sf"><label>Destino</label><input type="text" placeholder="Ej: Salento, Barichara..." /></div>
+          <div class="sf"><label>Llegada</label><input type="date" /></div>
+          <div class="sf"><label>Salida</label><input type="date" /></div>
+          <button class="btn-green">Buscar</button>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="chip on">Todo</span>
+        <span class="chip">Alojamiento</span>
+        <span class="chip">Actividades</span>
+        <span class="chip">Fincas</span>
+        <span class="chip">Pueblos</span>
+        <span class="chip">Negocios locales</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--color-text-secondary);align-self:center">8
+          resultados</span>
+      </div>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-img">Finca El Paraíso</div>
+          <div class="card-body">
+            <span class="badge-tipo">Finca turística</span>
+            <div class="card-title">Finca El Paraíso</div>
+            <div class="card-sub">Salento, Quindío</div>
+            <div class="stars">★★★★★ <span style="color:var(--color-text-secondary)">4.9 (42)</span></div>
+            <div class="card-price">$180.000 / noche</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img" style="background:#B5D4F4;color:#0C447C">Cabaña del Río</div>
+          <div class="card-body">
+            <span class="badge-tipo" style="background:#E6F1FB;color:#0C447C">Cabaña</span>
+            <div class="card-title">Cabaña del Río</div>
+            <div class="card-sub">Jardin, Antioquia</div>
+            <div class="stars">★★★★☆ <span style="color:var(--color-text-secondary)">4.6 (28)</span></div>
+            <div class="card-price">$120.000 / noche</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img" style="background:#FAC775;color:#633806">Senderismo Cocora</div>
+          <div class="card-body">
+            <span class="badge-tipo" style="background:#FAEEDA;color:#633806">Actividad</span>
+            <div class="card-title">Senderismo Valle del Cocora</div>
+            <div class="card-sub">Salento · 6 horas</div>
+            <div class="stars">★★★★★ <span style="color:var(--color-text-secondary)">4.8 (91)</span></div>
+            <div class="card-price">$45.000 / persona</div>
+          </div>
+        </div>
+      </div>
+      <div
+        style="padding:0 16px 14px;display:flex;align-items:center;gap:10px;font-size:11px;color:var(--color-text-secondary)">
+        <span style="flex:1;height:1px;background:var(--color-border-tertiary)"></span>
+        Ver mapa de resultados
+        <span style="flex:1;height:1px;background:var(--color-border-tertiary)"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA 2: DETALLE -->
+  <div class="screen" id="screen-detail">
+    <div class="wrapper">
+      <div class="topbar">
+        <span class="logo">EcoTurismo</span>
+        <div class="topbar-links"><span style="color:#1D9E75">← Volver a resultados</span></div>
+      </div>
+      <div class="det-img">Finca El Paraíso — Galería de fotos</div>
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:16px;padding:0 16px 16px">
+        <div class="det-body">
+          <div class="badge-tipo">Finca turística</div>
+          <div class="det-title">Finca El Paraíso</div>
+          <div class="det-meta">Salento, Quindío · Anfitrión: Carlos M. · Verificado</div>
+          <div class="det-grid">
+            <div class="det-stat">
+              <div class="det-stat-val">★ 4.9</div>
+              <div class="det-stat-lbl">Calificación</div>
+            </div>
+            <div class="det-stat">
+              <div class="det-stat-val">6 per.</div>
+              <div class="det-stat-lbl">Capacidad</div>
+            </div>
+            <div class="det-stat">
+              <div class="det-stat-val">42</div>
+              <div class="det-stat-lbl">Reseñas</div>
+            </div>
+            <div class="det-stat">
+              <div class="det-stat-val">5 ha</div>
+              <div class="det-stat-lbl">Extensión</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:10px">Finca
+            cafetera rodeada de naturaleza con senderos, avistamiento de aves, piscina natural y cocina campesina
+            incluida. Acceso a cultivos de café con experiencia de recolección.</div>
+          <div style="font-size:12px;font-weight:500;margin-bottom:6px">Servicios incluidos</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--color-text-secondary)">
+            <span
+              style="padding:3px 8px;background:var(--color-background-secondary);border-radius:10px">Desayuno</span>
+            <span style="padding:3px 8px;background:var(--color-background-secondary);border-radius:10px">WiFi</span>
+            <span
+              style="padding:3px 8px;background:var(--color-background-secondary);border-radius:10px">Parqueadero</span>
+            <span style="padding:3px 8px;background:var(--color-background-secondary);border-radius:10px">Guía
+              local</span>
+          </div>
+          <div style="margin-top:12px;font-size:12px;font-weight:500;margin-bottom:6px">Reseñas recientes</div>
+          <div
+            style="font-size:11px;color:var(--color-text-secondary);border-left:2px solid #1D9E75;padding-left:8px;margin-bottom:6px">
+            "Experiencia increíble, el paisaje es espectacular..." — Ana P. ★★★★★</div>
+          <div style="font-size:11px;color:var(--color-text-secondary);border-left:2px solid #1D9E75;padding-left:8px">
+            "Los anfitriones son muy amables y el desayuno..." — Luis R. ★★★★☆</div>
+        </div>
+        <div style="padding:14px 0">
+          <div class="aside-card">
+            <div class="aside-title">Reservar</div>
+            <div style="font-size:18px;font-weight:500;color:#1D9E75;margin-bottom:10px">$180.000 <span
+                style="font-size:12px;font-weight:400;color:var(--color-text-secondary)">/ noche</span></div>
+            <div class="date-grid">
+              <div class="sf"><label>Llegada</label><input type="date" style="width:100%" /></div>
+              <div class="sf"><label>Salida</label><input type="date" style="width:100%" /></div>
+            </div>
+            <div class="sf" style="margin-bottom:10px"><label>Personas</label><select style="width:100%">
+                <option>2 personas</option>
+                <option>4 personas</option>
+                <option>6 personas</option>
+              </select></div>
+            <div class="price-row"><span>$180.000 × 3 noches</span><span>$540.000</span></div>
+            <div class="price-row"><span>Cargo de servicio (10%)</span><span>$54.000</span></div>
+            <div class="price-total"><span>Total</span><span>$594.000</span></div>
+            <button class="btn-green" style="width:100%;margin-top:12px;padding:10px">Reservar ahora</button>
+            <div style="font-size:10px;color:var(--color-text-secondary);text-align:center;margin-top:6px">No se hará
+              ningún cargo aún</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA 3: RESERVA -->
+  <div class="screen" id="screen-booking">
+    <div class="wrapper">
+      <div class="topbar">
+        <span class="logo">EcoTurismo</span>
+        <div class="topbar-links"><span>Paso 2 de 3: Información de pago</span></div>
+      </div>
+      <div class="steps">
+        <div class="step done">1. Confirmar</div>
+        <div class="step cur">2. Pagar</div>
+        <div class="step">3. Confirmación</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;padding:0 16px 16px">
+        <div>
+          <div style="font-size:13px;font-weight:500;margin-bottom:10px">Datos del viajero</div>
+          <div class="two-col">
+            <div class="form-group"><label>Nombre</label><input type="text" value="María González" /></div>
+            <div class="form-group"><label>Apellido</label><input type="text" value="Rodríguez" /></div>
+          </div>
+          <div class="form-group"><label>Email</label><input type="email" value="maria@email.com" /></div>
+          <div class="form-group"><label>Teléfono</label><input type="tel" value="+57 310 555 0000" /></div>
+          <div style="font-size:13px;font-weight:500;margin:12px 0 10px">Información de pago</div>
+          <div class="form-group"><label>Titular de la tarjeta</label><input type="text"
+              placeholder="Como aparece en la tarjeta" /></div>
+          <div class="form-group"><label>Número de tarjeta</label><input type="text"
+              placeholder="•••• •••• •••• ••••" /></div>
+          <div class="two-col">
+            <div class="form-group"><label>Vencimiento</label><input type="text" placeholder="MM / AA" /></div>
+            <div class="form-group"><label>CVV</label><input type="text" placeholder="•••" /></div>
+          </div>
+          <div
+            style="font-size:11px;color:var(--color-text-secondary);margin-bottom:12px;display:flex;align-items:center;gap:6px">
+            <span
+              style="width:12px;height:12px;border:1px solid #1D9E75;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:#1D9E75">✓</span>
+            Acepto los términos y condiciones de la plataforma
+          </div>
+          <button class="btn-green" style="padding:10px 24px">Confirmar y pagar $594.000</button>
+        </div>
+        <div>
+          <div class="aside-card">
+            <div class="aside-title">Resumen de reserva</div>
+            <div style="font-size:12px;font-weight:500;margin-bottom:4px">Finca El Paraíso</div>
+            <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:10px">Salento · 15–18 jun 2025 ·
+              2 personas</div>
+            <div class="price-row"><span>3 noches</span><span>$540.000</span></div>
+            <div class="price-row"><span>Servicio</span><span>$54.000</span></div>
+            <div class="price-total"><span>Total COP</span><span>$594.000</span></div>
+            <div style="margin-top:10px;font-size:10px;color:var(--color-text-secondary);line-height:1.5">Cancela gratis
+              hasta 3 días antes. Después se aplica cargo del 50%.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA 4: ANFITRIÓN -->
+  <div class="screen" id="screen-host">
+    <div class="wrapper">
+      <div class="topbar">
+        <span class="logo">EcoTurismo · Panel anfitrión</span>
+        <div class="topbar-links"><span>Carlos M.</span><span style="color:#1D9E75">Plan Premium</span></div>
+      </div>
+      <div class="dash-grid">
+        <div class="metric">
+          <div class="metric-val">$1.840.000</div>
+          <div class="metric-lbl">Ingresos este mes</div>
+          <div class="metric-chg">+12% vs mes ant.</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">23</div>
+          <div class="metric-lbl">Reservas activas</div>
+          <div class="metric-chg">+4 nuevas hoy</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">★ 4.9</div>
+          <div class="metric-lbl">Calificación prom.</div>
+          <div class="metric-chg">42 reseñas</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">78%</div>
+          <div class="metric-lbl">Ocupación jun.</div>
+          <div class="metric-chg">Meta: 70%</div>
+        </div>
+      </div>
+      <div class="two-pane">
+        <div>
+          <div class="sec-title" style="padding:0 0 8px">Próximas reservas</div>
+          <table class="data-table">
+            <tr>
+              <th>Turista</th>
+              <th>Fechas</th>
+              <th>Personas</th>
+              <th>Estado</th>
+            </tr>
+            <tr>
+              <td>Ana Pérez</td>
+              <td>15–18 jun</td>
+              <td>2</td>
+              <td><span class="status s-ok">Confirmada</span></td>
+            </tr>
+            <tr>
+              <td>Luis Torres</td>
+              <td>20–22 jun</td>
+              <td>4</td>
+              <td><span class="status s-ok">Confirmada</span></td>
+            </tr>
+            <tr>
+              <td>Sandra Gil</td>
+              <td>25–28 jun</td>
+              <td>2</td>
+              <td><span class="status s-pend">Pendiente</span></td>
+            </tr>
+            <tr>
+              <td>Pedro M.</td>
+              <td>1–5 jul</td>
+              <td>6</td>
+              <td><span class="status s-can">Cancelada</span></td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <div class="sec-title" style="padding:0 0 8px">Mis listados</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div
+              style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:12px;font-weight:500">Finca El Paraíso</div>
+                <div style="font-size:10px;color:var(--color-text-secondary)">$180.000/noche · 6 pers.</div>
+              </div>
+              <span class="status s-ok">Activo</span>
+            </div>
+            <div
+              style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:12px;font-weight:500">Tour de café</div>
+                <div style="font-size:10px;color:var(--color-text-secondary)">$45.000/pers. · actividad</div>
+              </div>
+              <span class="status s-ok">Activo</span>
+            </div>
+            <button class="btn-green" style="font-size:11px;padding:6px 12px;align-self:start">+ Nuevo listado</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function show(id, btn) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+      document.getElementById('screen-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+
+</html>

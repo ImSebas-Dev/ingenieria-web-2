@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Prototipo interactivo del flujo de reserva para Eco Turismo Experiencial, mostrando selección de destino, fechas, pago simulado y confirmación."/>
+<title>Prototipo Interactivo — Reserva Eco Turismo Experiencial</title>
+<link rel="stylesheet" href="prototipo.css"/>
+</head>
+<body>
+
+<h1>Prototipo interactivo</h1>
+<p class="subtitle">Flujo completo de reserva — Eco Turismo Experiencial</p>
+
+<div class="proto" id="proto">
+  <div class="p-header">
+    <span class="p-logo">EcoTurismo</span>
+    <button class="p-back" id="p-back" onclick="goBack()" style="display:none">← Volver</button>
+  </div>
+  <div class="p-step-bar">
+    <div class="p-step cur" id="s1">1. Destino</div>
+    <div class="p-step" id="s2">2. Fechas</div>
+    <div class="p-step" id="s3">3. Pago</div>
+    <div class="p-step" id="s4">4. Confirmación</div>
+  </div>
+  <div class="p-body" id="p-body"></div>
+</div>
+
+<script>
+const SCREENS = ['dest','dates','payment','confirm'];
+let cur = 0;
+const state = {dest:'',checkin:'',checkout:'',guests:2,name:'',email:'',card:'',exp:'',cvv:''};
+
+const DESTS = [
+  {name:'Finca El Paraíso', loc:'Salento · Finca', color:'#9FE1CB'},
+  {name:'Cabaña del Río',   loc:'Jardín · Cabaña', color:'#B5D4F4'},
+  {name:'Tour de café',     loc:'Salento · Actividad', color:'#FAC775'},
+  {name:'Pueblo Barichara', loc:'Santander · Pueblo', color:'#F5C4B3'},
+];
+
+const PRICE_NOCHE = 180000;
+
+function nights(){
+  if(!state.checkin||!state.checkout) return 3;
+  const d = (new Date(state.checkout)-new Date(state.checkin))/(1000*60*60*24);
+  return d > 0 ? d : 3;
+}
+function total(){
+  const base = PRICE_NOCHE * nights();
+  return {base, serv: Math.round(base*0.1), total: Math.round(base*1.1)};
+}
+function fmt(n){return '$'+Math.round(n).toLocaleString('es-CO');}
+
+function render(){
+  document.getElementById('p-back').style.display = cur > 0 ? '' : 'none';
+  ['s1','s2','s3','s4'].forEach((id,i)=>{
+    const el = document.getElementById(id);
+    el.className = 'p-step' + (i < cur ? ' done' : i === cur ? ' cur' : '');
+  });
+  const b = document.getElementById('p-body');
+  if(cur===0) b.innerHTML = screenDest();
+  else if(cur===1) b.innerHTML = screenDates();
+  else if(cur===2) b.innerHTML = screenPayment();
+  else b.innerHTML = screenConfirm();
+}
+
+function screenDest(){
+  return `
+<div class="p-title">Encuentra tu destino</div>
+<div class="p-card" style="padding:0">
+  <div class="dest-grid">
+    ${DESTS.map(d=>`
+    <div class="dest-opt${state.dest===d.name?' selected':''}" onclick="selectDest('${d.name}')">
+      <div class="dest-dot" style="background:${d.color}"></div>
+      <div class="dest-name">${d.name}</div>
+      <div class="dest-loc">${d.loc}</div>
+    </div>`).join('')}
+  </div>
+</div>
+<button class="p-btn" ${!state.dest?'disabled':''} onclick="next()">Seleccionar y continuar</button>`;
+}
+
+function selectDest(d){ state.dest = d; render(); }
+
+function screenDates(){
+  const t = total();
+  return `
+<div class="p-title">Elige tus fechas</div>
+<div class="p-card">
+  <div style="font-size:13px;font-weight:500;margin-bottom:4px">${state.dest}</div>
+  <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:10px">$${PRICE_NOCHE.toLocaleString('es-CO')} / noche · hasta 6 personas</div>
+  <div class="two">
+    <div class="p-form-row"><label>Llegada</label><input type="date" value="${state.checkin}" onchange="state.checkin=this.value;renderPrices()"/></div>
+    <div class="p-form-row"><label>Salida</label><input type="date" value="${state.checkout}" onchange="state.checkout=this.value;renderPrices()"/></div>
+  </div>
+  <div class="p-form-row">
+    <label>Personas</label>
+    <select onchange="state.guests=this.value">
+      <option value="1">1 persona</option>
+      <option value="2"${state.guests==2?' selected':''}>2 personas</option>
+      <option value="4"${state.guests==4?' selected':''}>4 personas</option>
+      <option value="6"${state.guests==6?' selected':''}>6 personas</option>
+    </select>
+  </div>
+</div>
+<div class="p-card" id="price-block">
+  <div class="price-row"><span class="p-lbl">$${PRICE_NOCHE.toLocaleString('es-CO')} × ${nights()} noches</span><span class="p-val">${fmt(t.base)}</span></div>
+  <div class="price-row"><span class="p-lbl">Servicio (10%)</span><span class="p-val">${fmt(t.serv)}</span></div>
+  <div class="total-row"><span>Total COP</span><span>${fmt(t.total)}</span></div>
+</div>
+<button class="p-btn" onclick="next()">Confirmar fechas</button>`;
+}
+
+function renderPrices(){
+  const t = total();
+  const el = document.getElementById('price-block');
+  if(el) el.innerHTML = `
+  <div class="price-row"><span class="p-lbl">$${PRICE_NOCHE.toLocaleString('es-CO')} × ${nights()} noches</span><span class="p-val">${fmt(t.base)}</span></div>
+  <div class="price-row"><span class="p-lbl">Servicio (10%)</span><span class="p-val">${fmt(t.serv)}</span></div>
+  <div class="total-row"><span>Total COP</span><span>${fmt(t.total)}</span></div>`;
+}
+
+function screenPayment(){
+  const t = total();
+  return `
+<div class="p-title">Datos de pago</div>
+<div class="info-box">Pago seguro simulado. No ingreses datos reales.</div>
+<div id="err-box" class="error-box">Completa todos los campos para continuar.</div>
+<div class="p-form-row"><label>Nombre completo</label><input type="text" id="pname" placeholder="Titular de la tarjeta" value="${state.name}" oninput="state.name=this.value"/></div>
+<div class="p-form-row"><label>Número de tarjeta</label><input type="text" id="pcard" placeholder="4111 1111 1111 1111" value="${state.card}" maxlength="19" oninput="fmtCard(this)"/></div>
+<div class="two">
+  <div class="p-form-row"><label>Vencimiento</label><input type="text" id="pexp" placeholder="MM/AA" value="${state.exp}" maxlength="5" oninput="state.exp=this.value"/></div>
+  <div class="p-form-row"><label>CVV</label><input type="text" id="pcvv" placeholder="123" value="${state.cvv}" maxlength="3" oninput="state.cvv=this.value"/></div>
+</div>
+<div class="p-card">
+  <div class="p-row"><span class="p-lbl">${state.dest}</span><span></span></div>
+  <div class="p-row"><span class="p-lbl">Total a cobrar</span><span class="p-val" style="color:#1D9E75">${fmt(t.total)}</span></div>
+</div>
+<button class="p-btn" id="pay-btn" onclick="processPayment()">Pagar ${fmt(t.total)}</button>
+<p style="font-size:10px;color:var(--color-text-secondary);text-align:center;margin-top:8px">Pago cifrado con TLS 1.3 · No almacenamos datos de tarjeta</p>`;
+}
+
+function fmtCard(el){
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+  state.card = el.value;
+}
+
+function processPayment(){
+  const err = document.getElementById('err-box');
+  state.name = document.getElementById('pname').value;
+  state.exp  = document.getElementById('pexp').value;
+  state.cvv  = document.getElementById('pcvv').value;
+  if(!state.name || !state.card || !state.exp || !state.cvv){
+    err.style.display = 'block'; return;
+  }
+  err.style.display = 'none';
+  const btn = document.getElementById('pay-btn');
+  btn.innerHTML = '<span class="spinner"></span>Procesando...';
+  btn.disabled = true;
+  setTimeout(()=>next(), 2200);
+}
+
+function screenConfirm(){
+  const t = total();
+  const code = 'ECO-' + Math.random().toString(36).substring(2,8).toUpperCase();
+  return `
+<div style="text-align:center;padding:8px 0 16px">
+  <div class="check-circle">✓</div>
+  <div style="font-size:15px;font-weight:500;margin-bottom:4px">¡Reserva confirmada!</div>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:16px">Código: <strong>${code}</strong></div>
+</div>
+<div class="p-card">
+  <div class="p-row"><span class="p-lbl">Destino</span><span class="p-val">${state.dest}</span></div>
+  <div class="p-row"><span class="p-lbl">Noches</span><span class="p-val">${nights()}</span></div>
+  <div class="p-row"><span class="p-lbl">Personas</span><span class="p-val">${state.guests}</span></div>
+  <div class="p-row"><span class="p-lbl">Estado</span><span><span class="tag tag-ok">Confirmada</span></span></div>
+  <div class="total-row"><span>Total pagado</span><span>${fmt(t.total)}</span></div>
+</div>
+<div style="font-size:11px;color:var(--color-text-secondary);text-align:center;margin-bottom:12px">Recibirás un email de confirmación con los detalles del anfitrión.</div>
+<button class="p-btn" onclick="restart()">Nueva búsqueda</button>`;
+}
+
+function next(){ cur = Math.min(cur+1, 3); render(); }
+function goBack(){ cur = Math.max(cur-1, 0); render(); }
+function restart(){ cur = 0; state.dest=''; state.checkin=''; state.checkout=''; render(); }
+
+render();
+</script>
+</body>
+</html>
