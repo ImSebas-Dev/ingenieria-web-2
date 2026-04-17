@@ -1,0 +1,105 @@
+<style>
+.api-section{margin-bottom:16px}
+.api-group{font-size:11px;font-weight:500;color:var(--color-text-secondary);letter-spacing:.05em;margin-bottom:6px;padding-bottom:4px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.endpoint{display:grid;grid-template-columns:56px 220px 1fr auto;gap:10px;align-items:center;padding:7px 10px;border-radius:var(--border-radius-md);margin-bottom:4px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);font-size:12px}
+.method{font-size:10px;font-weight:500;padding:2px 6px;border-radius:4px;text-align:center}
+.get{background:#E1F5EE;color:#085041}
+.post{background:#E6F1FB;color:#0C447C}
+.put{background:#FAEEDA;color:#633806}
+.patch{background:#FAEEDA;color:#633806}
+.delete{background:#FCEBEB;color:#791F1F}
+.path{font-family:monospace;font-size:11px;color:var(--color-text-primary)}
+.desc{font-size:11px;color:var(--color-text-secondary)}
+.auth-badge{font-size:9px;padding:1px 6px;border-radius:8px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);white-space:nowrap}
+.base-url{font-family:monospace;font-size:12px;background:var(--color-background-secondary);padding:8px 12px;border-radius:var(--border-radius-md);margin-bottom:14px;color:var(--color-text-primary);border:0.5px solid var(--color-border-tertiary)}
+.legend{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
+</style>
+
+<div class="base-url">Base URL: https://api.ecoturismo.co/v1</div>
+<div class="legend">
+  <div class="leg-item"><span class="method get">GET</span> Consultar</div>
+  <div class="leg-item"><span class="method post">POST</span> Crear</div>
+  <div class="leg-item"><span class="method put">PUT</span> Reemplazar</div>
+  <div class="leg-item"><span class="method patch">PATCH</span> Actualizar parcial</div>
+  <div class="leg-item"><span class="method delete">DELETE</span> Eliminar</div>
+  <div class="leg-item"><span class="auth-badge">JWT</span> Requiere token</div>
+  <div class="leg-item"><span class="auth-badge">ADMIN</span> Solo admin</div>
+</div>
+
+<div class="api-section">
+  <div class="api-group">Autenticación</div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/auth/register</span><span class="desc">Registro de nuevo usuario</span><span></span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/auth/login</span><span class="desc">Login, retorna JWT + refresh token</span><span></span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/auth/refresh</span><span class="desc">Renovar access token</span><span></span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/auth/logout</span><span class="desc">Invalidar tokens</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/auth/forgot-password</span><span class="desc">Solicitar reset de contraseña</span><span></span></div>
+</div>
+
+<div class="api-section">
+  <div class="api-group">Usuarios</div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/users/me</span><span class="desc">Perfil propio</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method patch">PATCH</span><span class="path">/users/me</span><span class="desc">Actualizar perfil</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/users/{id}</span><span class="desc">Perfil público de usuario</span><span></span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/users</span><span class="desc">Listar usuarios (paginado)</span><span class="auth-badge">ADMIN</span></div>
+</div>
+
+<div class="api-section">
+  <div class="api-group">Listados — Alojamientos</div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/listings</span><span class="desc">Buscar con filtros: tipo, lat, lng, radio, precio, fechas</span><span></span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/listings/{id}</span><span class="desc">Detalle de alojamiento</span><span></span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/listings</span><span class="desc">Crear alojamiento (anfitrión)</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method put">PUT</span><span class="path">/listings/{id}</span><span class="desc">Actualizar alojamiento</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method delete">DELETE</span><span class="path">/listings/{id}</span><span class="desc">Eliminar listado</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/listings/{id}/availability</span><span class="desc">Consultar disponibilidad por rango</span><span></span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/listings/{id}/images</span><span class="desc">Subir imágenes (multipart)</span><span class="auth-badge">JWT</span></div>
+</div>
+
+<div class="api-section">
+  <div class="api-group">Actividades</div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/activities</span><span class="desc">Buscar actividades con filtros</span><span></span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/activities/{id}</span><span class="desc">Detalle de actividad</span><span></span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/activities</span><span class="desc">Crear actividad</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method put">PUT</span><span class="path">/activities/{id}</span><span class="desc">Actualizar actividad</span><span class="auth-badge">JWT</span></div>
+</div>
+
+<div class="api-section">
+  <div class="api-group">Reservas</div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/bookings</span><span class="desc">Crear reserva (verifica disponibilidad y bloquea)</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/bookings</span><span class="desc">Mis reservas (turista o anfitrión)</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/bookings/{id}</span><span class="desc">Detalle de reserva</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method patch">PATCH</span><span class="path">/bookings/{id}/cancel</span><span class="desc">Cancelar reserva</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method patch">PATCH</span><span class="path">/bookings/{id}/confirm</span><span class="desc">Confirmar por anfitrión</span><span class="auth-badge">JWT</span></div>
+</div>
+
+<div class="api-section">
+  <div class="api-group">Pagos</div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/payments</span><span class="desc">Procesar pago de reserva</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/payments/{id}</span><span class="desc">Estado del pago</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/payments/webhook</span><span class="desc">Webhook de pasarela (firma HMAC)</span><span></span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/payments/commissions</span><span class="desc">Reporte de comisiones</span><span class="auth-badge">ADMIN</span></div>
+</div>
+
+<div class="api-section">
+  <div class="api-group">Reseñas</div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/reviews</span><span class="desc">Crear reseña (requiere reserva completada)</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/reviews?entity_type=listing&entity_id={id}</span><span class="desc">Reseñas de un listado</span><span></span></div>
+  <div class="endpoint"><span class="method patch">PATCH</span><span class="path">/reviews/{id}/moderate</span><span class="desc">Moderar reseña</span><span class="auth-badge">ADMIN</span></div>
+  <div class="endpoint"><span class="method delete">DELETE</span><span class="path">/reviews/{id}</span><span class="desc">Eliminar reseña</span><span class="auth-badge">ADMIN</span></div>
+</div>
+
+<div class="api-section">
+  <div class="api-group">Favoritos &amp; búsqueda avanzada</div>
+  <div class="endpoint"><span class="method post">POST</span><span class="path">/favorites</span><span class="desc">Guardar favorito</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/favorites</span><span class="desc">Mis favoritos</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method delete">DELETE</span><span class="path">/favorites/{id}</span><span class="desc">Eliminar favorito</span><span class="auth-badge">JWT</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/search/nearby?lat=&lng=&radius=</span><span class="desc">Búsqueda geoespacial (PostGIS)</span><span></span></div>
+</div>
+
+<div class="api-section">
+  <div class="api-group">Admin &amp; reportes</div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/admin/stats</span><span class="desc">KPIs del negocio</span><span class="auth-badge">ADMIN</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/admin/reports/bookings</span><span class="desc">Reporte de reservas por período</span><span class="auth-badge">ADMIN</span></div>
+  <div class="endpoint"><span class="method patch">PATCH</span><span class="path">/admin/listings/{id}/approve</span><span class="desc">Aprobar/rechazar listado</span><span class="auth-badge">ADMIN</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="path">/admin/audit-logs</span><span class="desc">Logs de auditoría</span><span class="auth-badge">ADMIN</span></div>
+</div>
